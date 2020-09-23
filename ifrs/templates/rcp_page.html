@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block style %}
+    <style>
+        td, th {
+            border: 1px solid black;
+        }
+        p {
+            margin: 5px 0;
+        }
+        .home_button {
+            position: absolute;
+            left: 50%;
+            top: 120px;
+            margin-left: -500px;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-family: Century Gothic, serif;
+            color: white;
+            background: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+        }
+        .main_data_block {
+            width: 1000px;
+            height: 384px;
+            position: absolute;
+            left: 50%;
+            top: 200px;
+            margin-left: -500px;
+            cursor: default;
+        }
+        .data_info_block {
+            width: 300px;
+            position: absolute;
+            padding-left: 10px;
+            padding-top: 5px;
+            border: 1px solid black;
+            border-radius: 10px;
+            font-family: Century Gothic, serif;
+            color: white;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        .first_cell {
+            border-left: 1px solid dimgray;
+            border-top: 1px solid dimgray;
+            background: dimgray;
+        }
+        .data_table_block {
+            position: absolute;
+            top: 150px;
+        }
+        .data_table {
+            width: 1000px;
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+            font-family: Arial, serif;
+            font-size: 10px;
+            color: rgb(0, 60, 120);
+            background: white;
+        }
+        .save_button {
+            width: 100px;
+            height: 27px;
+            position: absolute;
+            bottom: 0;
+            right: 105px;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-family: Century Gothic, serif;
+            color: limegreen;
+            background: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+        }
+        .delete_button {
+            width: 100px;
+            height: 27px;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-family: Century Gothic, serif;
+            color: red;
+            background: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+        }
+        .confirm_delete_block {
+            width: 300px;
+            height: 130px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -150px;
+            margin-top: -150px;
+            border: 2px solid black;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 3000;
+        }
+        .confirm_delete_info {
+            width: 250px;
+            position: absolute;
+            left: 50%;
+            top: 20px;
+            margin-left: -125px;
+            text-align: center;
+            font-family: Century Gothic, serif;
+            font-size: 22px;
+            color: white;
+        }
+        .conf_delete_button {
+            width: 100px;
+            height: 27px;
+            position: absolute;
+            left: 45px;
+            bottom: 20px;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-family: Century Gothic, serif;
+            color: red;
+            background: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <form method="GET" action="{% url 'home_page' %}">
+        <button class="home_button">Go home</button>
+    </form>
+
+    <div class="hidden" id="confirm_delete_block">
+        <div class="confirm_delete_info">
+            Are you sure you want to delete the table?
+        </div>
+
+        <form method="POST" action="{% url 'rcp_page' data.info_data.table_name %}">
+            <button class="conf_delete_button" name="delete_table" value="1">Delete</button>
+        </form>
+
+        <button class="conf_delete_button" onclick="CloseDelete()" style="left: 155px; color: white;">
+            Cancel
+        </button>
+    </div>
+
+    <script>
+        function ConfirmDelete() {
+            const delete_field = document.querySelector("#confirm_delete_block");
+            delete_field.className = "confirm_delete_block";
+        }
+    </script>
+
+    <script>
+        function CloseDelete() {
+            const delete_field = document.querySelector("#confirm_delete_block");
+            delete_field.className = "hidden";
+        }
+    </script>
+
+    <div class="main_data_block">
+        <div class="data_info_block">
+            <b>ID:</b> {{ data.info_data.id }}<p>
+            <b>Имя таблицы:</b> {{ data.info_data.table_name }}<p>
+            <b>Размер таблицы:</b> {{ data.info_data.table_size }}<p>
+            <b>Дата загрузки:</b> {{ data.info_data.upload_date | date:"d.m.Y, H:m" }}
+        </div>
+
+        <button class="delete_button" onclick="ConfirmDelete()">Delete table</button>
+
+        <form method="POST" action="{% url 'rcp_page' data.info_data.table_name %}">
+            <button class="save_button" name="save_file" value="1">Save to CSV</button>
+        </form>
+
+        <div class="data_table_block">
+            <table class="data_table">
+                <tr style="background: rgb(221, 235, 247);">
+                    <td class="first_cell"> </td>
+                    {% for title in data.titles %}
+                        <td>{{ title }}</td>
+                    {% endfor %}
+                </tr>
+                {% for row in data.head_data %}
+                    <tr>
+                        <td style="width: 50px;">{{ row.row }}</td>
+                        <td style="width: 140px;">{{ row.contract_number }}</td>
+                        <td style="width: 65px;">{{ row.contract_type }}</td>
+                        <td style="width: 80px;">{{ row.contract_date | date:"d.m.Y" }}</td>
+                        <td style="width: 55px;">{{ row.credit_limit | floatformat:1 }}</td>
+                        <td style="width: 55px;">{{ row.accrued_interest_balance | floatformat:1 }}</td>
+                        <td style="width: 60px;">{{ row.accrued_interest_off_balance | floatformat:1 }}</td>
+                        <td style="width: 53px;">{{ row.contract_rate | floatformat:1 }}</td>
+                        <td style="width: 52px;">{{ row.current_rate | floatformat:1 }}</td>
+                        <td style="width: 170px;">{{ row.product_id }}</td>
+                        <td style="width: 55px;">{{ row.debt | floatformat:1 }}</td>
+                        <td style="width: 65px;">{{ row.overdue_duration }}</td>
+                        <td style="width: 35px;">{{ row.npl }}</td>
+                        <td style="width: 55px;">{{ row.write_off_debt | floatformat:1 }}</td>
+                        <td style="width: 55px;">{{ row.total_debt | floatformat:1 }}</td>
+                    </tr>
+                {% endfor %}
+                <tr style="background: rgb(235, 235, 235);">
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                    <td><b>&#8942;</b></td>
+                </tr>
+                {% for row in data.tail_data %}
+                    <tr>
+                        <td>{{ row.row }}</td>
+                        <td>{{ row.contract_number }}</td>
+                        <td>{{ row.contract_type }}</td>
+                        <td>{{ row.contract_date | date:"d.m.Y" }}</td>
+                        <td>{{ row.credit_limit | floatformat:1 }}</td>
+                        <td>{{ row.accrued_interest_balance | floatformat:1 }}</td>
+                        <td>{{ row.accrued_interest_off_balance | floatformat:1 }}</td>
+                        <td>{{ row.contract_rate | floatformat:1 }}</td>
+                        <td>{{ row.current_rate | floatformat:1 }}</td>
+                        <td>{{ row.product_id }}</td>
+                        <td>{{ row.debt | floatformat:1 }}</td>
+                        <td>{{ row.overdue_duration }}</td>
+                        <td>{{ row.npl }}</td>
+                        <td>{{ row.write_off_debt | floatformat:1 }}</td>
+                        <td>{{ row.total_debt | floatformat:1 }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

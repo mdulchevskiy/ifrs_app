@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+
+{% block style %}
+    <style>
+        .home_button {
+            position: absolute;
+            left: 50%;
+            top: 120px;
+            margin-left: -440px;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-family: Century Gothic, serif;
+            color: white;
+            background: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+        }
+        .delete_button {
+            width: 50px;
+            margin-left: 5px;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-family: Century Gothic, serif;
+            font-size: 10px;
+            color: red;
+            background: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+        }
+        .ifrs_table_block {
+            position: absolute;
+            left: 50%;
+            top: 190px;
+            margin-left: -440px;
+        }
+        .title_block {
+            width: 300px;
+            position: absolute;
+        }
+        .data_block {
+            overflow-x: auto;
+            max-width: 649px;
+            position: absolute;
+            left: 227px;
+            padding-bottom: 5px;
+        }
+        .data_block::-webkit-scrollbar {
+            height: 7px;
+        }
+        .data_block::-webkit-scrollbar-track {
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .data_block::-webkit-scrollbar-thumb:hover {
+            background: rgba(245, 245, 245, 0.7);
+        }
+        .data_block::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background: whitesmoke;
+        }
+        .ifrs_table {
+            padding: 0;
+            margin: 0;
+            border-collapse: collapse;
+            border: 1px solid black;
+            font-family: "Arial", serif;
+            color: rgb(0, 60, 120);
+            background: white;
+        }
+        .ifrs_head_td {
+            padding-left: 5px;
+            border: 1px solid black;
+            text-align: left;
+            font-size: 12px;
+        }
+        .ifrs_td {
+            width: 70px;
+            padding: 0 15px 0 5px;
+            border: 1px solid black;
+            text-align: center;
+            font-size: 11px;
+        }
+        .ifrs_td_opt {
+            width: 40px;
+            padding: 0;
+            border: 1px solid black;
+            border-top: none;
+            border-bottom: none;
+            text-align: center;
+            font-size: 11px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <form method="GET" action="{% url 'home_page' %}">
+        <button class="home_button">Go home</button>
+    </form>
+
+    <div class="ifrs_table_block">
+        <div class="title_block">
+            <table class="ifrs_table">
+                <tbody>
+                    <tr style="background: rgb(221, 235, 247);">
+                        <td class="ifrs_head_td" style="width: 220px;">
+                            CCF (Credit Conversion Factor)
+                        </td>
+                    </tr>
+                    <tr><td class="ifrs_td" style="text-align: left;">Банковские карты</td></tr>
+                </tbody>
+            </table><p>
+
+            <table class="ifrs_table">
+                <tbody>
+                    <tr style="background: rgb(221, 235, 247);">
+                        <td class="ifrs_head_td" style="width: 220px;">
+                            LGD (Loss Given Default)
+                        </td>
+                    </tr>
+                    <tr><td class="ifrs_td" style="text-align: left;">Кредит на недвижимость</td></tr>
+                    <tr><td class="ifrs_td" style="text-align: left;">Потребительское кредитование</td></tr>
+                    <tr><td class="ifrs_td" style="text-align: left;">Автокредит</td></tr>
+                    <tr><td class="ifrs_td" style="text-align: left;">Банковские карты</td></tr>
+                    <tr><td class="ifrs_td" style="text-align: left;">Delay</td></tr>
+                </tbody>
+            </table><p>
+
+            <table class="ifrs_table">
+                <tbody>
+                    <tr style="background: rgb(221, 235, 247);">
+                        <td colspan="2" class="ifrs_head_td" style="width: 220px;">
+                            PD (Probability of Default)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="5" class="ifrs_td" style="width: 160px; text-align: left;">Кредит на недвижимость</td>
+                        <td class="ifrs_td_opt">0</td>
+                    </tr>
+                    <tr><td class="ifrs_td_opt">1-30</td></tr>
+                    <tr><td class="ifrs_td_opt">31-60</td></tr>
+                    <tr><td class="ifrs_td_opt">61-90</td></tr>
+                    <tr><td class="ifrs_td_opt">90+</td></tr>
+
+                    <tr>
+                        <td rowspan="5" class="ifrs_td" style="width: 160px; text-align: left;">Потребительское кредитование</td>
+                        <td class="ifrs_td_opt" style="border-top: 1px solid black;">0</td>
+                    </tr>
+                    <tr><td class="ifrs_td_opt">1-30</td></tr>
+                    <tr><td class="ifrs_td_opt">31-60</td></tr>
+                    <tr><td class="ifrs_td_opt">61-90</td></tr>
+                    <tr><td class="ifrs_td_opt">90+</td></tr>
+
+                    <tr>
+                        <td rowspan="5" class="ifrs_td" style="width: 160px; text-align: left;">Автокредит</td>
+                        <td class="ifrs_td_opt" style="border-top: 1px solid black;">0</td>
+                    </tr>
+                    <tr><td class="ifrs_td_opt">1-30</td></tr>
+                    <tr><td class="ifrs_td_opt">31-60</td></tr>
+                    <tr><td class="ifrs_td_opt">61-90</td></tr>
+                    <tr><td class="ifrs_td_opt">90+</td></tr>
+
+                    <tr>
+                        <td rowspan="5" class="ifrs_td" style="width: 160px; text-align: left;">Банковские карты</td>
+                        <td class="ifrs_td_opt" style="border-top: 1px solid black;">0</td>
+                    </tr>
+                    <tr><td class="ifrs_td_opt">1-30</td></tr>
+                    <tr><td class="ifrs_td_opt">31-60</td></tr>
+                    <tr><td class="ifrs_td_opt">61-90</td></tr>
+                    <tr><td class="ifrs_td_opt">90+</td></tr>
+
+                    <tr>
+                        <td rowspan="5" class="ifrs_td" style="width: 160px; text-align: left;">Delay</td>
+                        <td class="ifrs_td_opt" style="border-top: 1px solid black;">0</td>
+                    </tr>
+                    <tr><td class="ifrs_td_opt">1-30</td></tr>
+                    <tr><td class="ifrs_td_opt">31-60</td></tr>
+                    <tr><td class="ifrs_td_opt">61-90</td></tr>
+                    <tr><td class="ifrs_td_opt">90+</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="data_block" id="ifrs_data">
+            <table class="ifrs_table">
+                <tbody>
+                    <tr style="background: rgb(221, 235, 247);">
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_head_td" style="padding: 1px 5px;">{{ date_data.date | date:"d.m.Y" }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td">{{ date_data.ccf_over | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table><p>
+
+            <table class="ifrs_table">
+                <tbody>
+                    <tr style="background: rgb(221, 235, 247);">
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_head_td" style="padding: 1px 5px;">{{ date_data.date | date:"d.m.Y" }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td">{{ date_data.lgd_nedv | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td">{{ date_data.lgd_potr | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td">{{ date_data.lgd_auto | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td">{{ date_data.lgd_over | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td">{{ date_data.lgd_delay | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table><p>
+
+            <table class="ifrs_table">
+                <tbody>
+                    <tr style="background: rgb(221, 235, 247);">
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_head_td" style="padding: 1px 5px;">{{ date_data.date | date:"d.m.Y" }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-bottom: none;">{{ date_data.pd_nedv_0 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_nedv_1_30 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_nedv_31_60 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_nedv_61_90 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none;">{{ date_data.pd_nedv_91 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-bottom: none;">{{ date_data.pd_potr_0 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_potr_1_30 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_potr_31_60 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_potr_61_90 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none;">{{ date_data.pd_potr_91 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-bottom: none;">{{ date_data.pd_auto_0 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_auto_1_30 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_auto_31_60 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_auto_61_90 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none;">{{ date_data.pd_auto_91 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-bottom: none;">{{ date_data.pd_over_0 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_over_1_30 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_over_31_60 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_over_61_90 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none;">{{ date_data.pd_over_91 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-bottom: none;">{{ date_data.pd_delay_0 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_delay_1_30 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_delay_31_60 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none; border-bottom: none;">{{ date_data.pd_delay_61_90 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for date_data in ifrs_data %}
+                        <td class="ifrs_td" style="border-top: none;">{{ date_data.pd_delay_91 | floatformat:4 }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table><p style="margin: 5px;">
+
+            <table class="ifrs_table">
+                <tbody>
+                    <tr style="background: none;">
+                        {% for date_data in ifrs_data %}
+                            <td class="ifrs_head_td" style="border-color: dimgray; padding: 1px 5px; background: dimgray; color: dimgray; user-select: none;">
+                                <form method="POST" action="{% url 'ifrs_page' %}">
+                                    <button class="delete_button" name="del_ifrs" value='{{ date_data.date | date:"d.m.Y" }}'>Delete</button>
+                                </form>
+                                {{ date_data.date | date:"d.m.Y" }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table><p style="margin: 5px;">
+        </div>
+
+        <script>
+            const block = document.getElementById("ifrs_data");
+            block.scrollLeft = block.scrollWidth;
+        </script>
+    </div>
+{% endblock %}

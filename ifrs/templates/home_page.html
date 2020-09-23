@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block style %}
+    <style>
+        .rcp_table {
+            border-spacing: 0;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        .rcp_table_td {
+            padding: 2px 0;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+        }
+        .rcp_table_th {
+            padding: 5px 0;
+            font-size: 16px;
+        }
+        .ui_block {
+            width: 240px;
+            position: absolute;
+            left: 50%;
+            top: 248px;
+            margin-left: -320px;
+            font-family: "Century Gothic", serif;
+            color: white;
+        }
+        .select_field {
+            width: 100px;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-family: "Century Gothic", serif;
+            background: rgb(241, 241, 241);
+        }
+        .calculate_button {
+            width: 100px;
+            height: 24px;
+            padding: 0;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-family: 'Century Gothic', serif;
+            font-size: 16px;
+            color: limegreen;
+            background: rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+        }
+        .ifrs_button {
+            position: absolute;
+            top: 105px;
+            width: 150px;
+            height: 24px;
+            padding: 0;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-family: 'Century Gothic', serif;
+            font-size: 16px;
+            color: white;
+            background: rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+        }
+        .db_block {
+            width: 335px;
+            position: absolute;
+            left: 50%;
+            top: 220px;
+            margin-left: 33px;
+            font-family: 'Century Gothic', serif;
+        }
+        .db_title_block {
+            padding-bottom: 5px;
+            font-size: 20px;
+            text-align: center;
+            color: white;
+            cursor: default;
+        }
+        .db_info_block {
+            width: 100%;
+            height: 282px;
+            position: absolute;
+            border: 1px solid black;
+            border-radius: 10px;
+            background: silver;
+            cursor: default;
+        }
+        .db_info_data_block {
+            width: 318px;
+            height: 211px;
+            overflow-y: auto;
+            position: absolute;
+            left: 6px;
+            top: 60px;
+            padding-left: 3px;
+            padding-right: 5px;
+            font-size: 13px;
+            background: silver;
+            cursor: default;
+        }
+        .db_info_data_block::-webkit-scrollbar {
+            width: 5px;
+        }
+        .db_info_data_block::-webkit-scrollbar-track {
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .db_info_data_block::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.4);
+        }
+        .db_info_data_block::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        .db_button_block {
+            width: 220px;
+            position: absolute;
+            left: 50px;
+            top: 280px;
+        }
+        .file_field {
+            display: none;
+        }
+        .label_for_file_input {
+            padding: 1px 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-size: 16px;
+            color: white;
+            background: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+        }
+        .upload_button {
+            width: 103px;
+            height: 24px;
+            padding: 0;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-family: 'Century Gothic', serif;
+            font-size: 16px;
+            color: limegreen;
+            background: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="ui_block">
+        <form method="POST">
+            {% for field in date_choice_form %}
+                {{ field.label }}: {{ field }}<p>
+            {% endfor %}
+            <button class="calculate_button" name="calculate_flag" value="1">Calculate</button>
+        </form>
+
+        <form action="{% url 'ifrs_page' %}">
+            <button class="ifrs_button">Show IFRS data</button>
+        </form>
+    </div>
+
+    <div class="db_block">
+        <div class="db_title_block">RCP database</div>
+
+        {% if database %}
+            <div class="db_info_block">
+                <table class="rcp_table" style="margin-left: 6px;">
+                    <thead>
+                        <tr>
+                            <th class="rcp_table_th" style="width: 120px;">Name</th>
+                            <th class="rcp_table_th" style="width: 90px;">Size</th>
+                            <th class="rcp_table_th" style="width: 110px;">Upload Date</th>
+                        </tr>
+                    </thead>
+               </table>
+            </div>
+
+            <div class="db_info_data_block" id="db_info">
+                <table class="rcp_table">
+                    <tbody>
+                        {% for row in database %}
+                            <tr>
+                                <td class="rcp_table_td" style="width: 120px;">
+                                    <a methods="GET" href="{% url 'rcp_page' row.table_name %}">{{ row.table_name }}</a>
+                                </td>
+                                <td class="rcp_table_td" style="width: 90px;">{{ row.table_size }}</td>
+                                <td class="rcp_table_td" style="width: 103px;">{{ row.upload_date | date:"d.m.y H:i" }}</td>
+                           </tr>
+                        {% endfor %}
+                    </tbody>
+               </table>
+            </div>
+
+            <script>
+                db_info.scrollTop = db_info.scrollHeight;
+            </script>
+        {% else %}
+            <div class="db_info_block">
+                <div style="padding-top: 120px; text-align: center;">Empty</div>
+            </div>
+        {% endif %}
+
+        <div class="db_button_block">
+            <form method="POST" enctype="multipart/form-data">
+                {{ upload_form.upload_file }}
+                <label class="label_for_file_input" for="file_field">Choose File</label>
+                <button class="upload_button" name="upload_file_flag" value="1">Upload</button><br>
+            </form>
+        </div>
+    </div>
+{% endblock %}

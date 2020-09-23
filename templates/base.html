@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IFRS</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <style>
+        html {
+            height: 100%;
+        }
+        body {
+            overflow: auto;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        a {
+            text-decoration: none;
+            color: black;
+        }
+        a:hover {
+            color: darkgoldenrod;
+        }
+        #message_block {
+            width: 810px;
+            position: absolute;
+            left: 50%;
+            top: -10px;
+            padding: 0 30px 0 0;
+            margin-left: -420px;
+            border-radius: 0 0 10px 10px;
+            text-align: center;
+            font-family: 'Century Gothic', serif;
+            font-size: 18px;
+            background: white;
+            opacity: 0.8;
+            z-index: 1000;
+        }
+        .messages {
+            list-style-type: none;
+        }
+        .messages li.success {
+            color: seagreen;
+        }
+        .messages li.warning {
+            color: firebrick;
+        }
+        .messages li.error {
+            color: firebrick;
+        }
+        .hidden {
+            display: none;
+        }
+        .close_message {
+            position: absolute;
+            top: 5px;
+            right: 7px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .main_block {
+            width: 100vw;
+            height: 100%;
+            min-width: 1020px;
+            min-height: 860px;
+            position: absolute;
+            background: dimgray;
+        }
+        .block_for_img_logo {
+            position: absolute;
+            left: 50%;
+            bottom: 20px;
+            margin-left: -125px;
+        }
+    </style>
+    {% block style %}{% endblock %}
+</head>
+<body>
+    {% load static %}
+    <div class="main_block">
+        {% if messages %}
+            <div id="message_block">
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">
+                            {{ message }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <a class="close_message" onclick="CloseMessage()">&times;</a>
+            </div>
+
+            <script>
+                const elem = document.getElementById("message_block");
+                const info = elem.offsetHeight - 10;
+                elem.style.height = info + "px";
+
+                function CloseMessage() {
+                    const message_field = document.querySelector("#message_block");
+                    message_field.className = "hidden";
+                }
+
+                function hide_message() {
+                    const message = document.querySelector("#message_block");
+                    message.classList.add("hidden");
+                }
+                setTimeout(() => hide_message(), 120000)
+            </script>
+        {% endif %}
+
+        {% block body %}{% endblock %}
+
+        <div class="block_for_img_logo">
+            <img src="{% static 'logo.png' %}" width="250px">
+        </div>
+    </div>
+</body>
+</html>
