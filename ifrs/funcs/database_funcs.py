@@ -16,7 +16,7 @@ def read_file(file, request):
     excel_engine = settings.EXCEL_ENGINE[file_extension]
     file_path = os.path.join(default_storage.location, file.name)
     rcp = pd.read_excel(file_path, engine=excel_engine)
-    received_data_types = rcp.dtypes.astype(str).to_dict()
+    rcp.dropna(how='all', inplace=True)
     received_rows_amount, received_columns_amount = rcp.shape
     expected_columns_amount = len(settings.FIELD_TITLES)
     if received_columns_amount != expected_columns_amount:
@@ -27,19 +27,20 @@ def read_file(file, request):
         message = f'File "{file.name}" was not uploaded. Invalid number of rows.'
         messages.add_message(request, messages.ERROR, message)
         return None
-    elif received_data_types != settings.EXPECTED_DATA_TYPES:
-        message = f'File "{file.name}" was not uploaded. Invalid data types.'
-        messages.add_message(request, messages.ERROR, message)
-        return None
     else:
         rcp.columns = settings.FIELD_TITLES
-        rcp.dropna(how='all', inplace=True)
         rcp['product_id'].fillna(0, inplace=True)
-        if file_extension == '.xlsb':
+        rcp.product_id = rcp.product_id.astype('object')
+        received_data_types = rcp.dtypes.astype(str).to_dict()
+        if received_data_types != settings.EXPECTED_XLSB_DATA_TYPES and \
+                received_data_types != settings.EXPECTED_XLSX_DATA_TYPES:
+            message = f'File "{file.name}" was not uploaded. Invalid data types.'
+            messages.add_message(request, messages.ERROR, message)
+            return None
+        elif file_extension == '.xlsb':
+            rcp.overdue_duration = rcp.overdue_duration.astype('int64')
             rcp.contract_date = pd.to_datetime(
                 rcp.contract_date - settings.FROM_EXCEL_TO_UNIX_TIMESTAMP_DELTA, unit='D', )
-            rcp.overdue_duration = rcp.overdue_duration.astype('int64')
-            rcp.product_id = rcp.product_id.astype('object')
         return rcp
 
 

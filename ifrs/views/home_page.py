@@ -52,7 +52,7 @@ def home_page(request):
                 else:
                     save_file_to_media(file)
                     rcp = read_file(file, request)
-                    if rcp:
+                    if rcp is not None:
                         connection = sql_engine.connect()
                         rcp.to_sql(file_db_name, connection, index=False)
                         uploading_time = datetime.now() - start_upload_time

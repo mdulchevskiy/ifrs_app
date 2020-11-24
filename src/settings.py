@@ -195,7 +195,7 @@ FIELD_TITLES_RUS = (
     'СПИС. ЗАДОЛЖ.',
     'ОБЩАЯ ЗАДОЛЖ.',
 )
-EXPECTED_DATA_TYPES = {
+EXPECTED_XLSX_DATA_TYPES = {
     'contract_number': 'object',
     'contract_type': 'object',
     'contract_date': 'datetime64[ns]',
@@ -207,6 +207,22 @@ EXPECTED_DATA_TYPES = {
     'product_id': 'object',
     'debt': 'float64',
     'overdue_duration': 'int64',
+    'npl': 'object',
+    'write_off_debt': 'float64',
+    'total_debt': 'float64',
+}
+EXPECTED_XLSB_DATA_TYPES = {
+    'contract_number': 'object',
+    'contract_type': 'object',
+    'contract_date': 'float64',
+    'credit_limit': 'float64',
+    'accrued_interest_balance': 'float64',
+    'accrued_interest_off_balance': 'float64',
+    'contract_rate': 'float64',
+    'current_rate': 'float64',
+    'product_id': 'object',
+    'debt': 'float64',
+    'overdue_duration': 'float64',
     'npl': 'object',
     'write_off_debt': 'float64',
     'total_debt': 'float64',
