@@ -195,7 +195,7 @@ FIELD_TITLES_RUS = (
     'СПИС. ЗАДОЛЖ.',
     'ОБЩАЯ ЗАДОЛЖ.',
 )
-EXPECTED_XLSX_DATA_TYPES = {
+EXPECTED_DATA_TYPES = [{
     'contract_number': 'object',
     'contract_type': 'object',
     'contract_date': 'datetime64[ns]',
@@ -210,8 +210,7 @@ EXPECTED_XLSX_DATA_TYPES = {
     'npl': 'object',
     'write_off_debt': 'float64',
     'total_debt': 'float64',
-}
-EXPECTED_XLSB_DATA_TYPES = {
+}, {
     'contract_number': 'object',
     'contract_type': 'object',
     'contract_date': 'float64',
@@ -226,7 +225,23 @@ EXPECTED_XLSB_DATA_TYPES = {
     'npl': 'object',
     'write_off_debt': 'float64',
     'total_debt': 'float64',
-}
+}, {
+    'contract_number': 'object',
+    'contract_type': 'object',
+    'contract_date': 'int64',
+    'credit_limit': 'float64',
+    'accrued_interest_balance': 'float64',
+    'accrued_interest_off_balance': 'float64',
+    'contract_rate': 'float64',
+    'current_rate': 'float64',
+    'product_id': 'object',
+    'debt': 'float64',
+    'overdue_duration': 'int64',
+    'npl': 'object',
+    'write_off_debt': 'float64',
+    'total_debt': 'float64',
+}]
+
 # Коды продуктов для включения в доп. выборку, по которым ведется работа ООО "Правовой диалог".
 LGD_PROGRAM_INCLUDE = 'OV_PS|OV_BD|OV_NK|OV_SUPER|OV_BD_CASH'
 # Коды программ для исключения из доп. выборки.

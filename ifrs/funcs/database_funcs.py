@@ -32,8 +32,7 @@ def read_file(file, request):
         rcp['product_id'].fillna(0, inplace=True)
         rcp.product_id = rcp.product_id.astype('object')
         received_data_types = rcp.dtypes.astype(str).to_dict()
-        if received_data_types != settings.EXPECTED_XLSB_DATA_TYPES and \
-                received_data_types != settings.EXPECTED_XLSX_DATA_TYPES:
+        if all([received_data_types != data_types for data_types in settings.EXPECTED_DATA_TYPES]):
             message = f'File "{file.name}" was not uploaded. Invalid data types.'
             messages.add_message(request, messages.ERROR, message)
             return None
