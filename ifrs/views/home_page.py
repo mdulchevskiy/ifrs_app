@@ -13,6 +13,7 @@ from ifrs.models import (UploadInfo,
                          IFRSData, )
 from ifrs.funcs import (read_file,
                         save_file_to_media,
+                        check_table_exist,
                         ccf_calculation,
                         pd_calculation,
                         lgd_calculation,
@@ -52,7 +53,7 @@ def home_page(request):
                 else:
                     save_file_to_media(file)
                     rcp = read_file(file, request)
-                    if rcp is not None:
+                    if rcp is not None and check_table_exist(sql_engine, file_db_name):
                         connection = sql_engine.connect()
                         rcp.to_sql(file_db_name, connection, index=False)
                         uploading_time = datetime.now() - start_upload_time
